@@ -255,7 +255,7 @@ function txQuery(city,keywords,limit){
     const cb="_tx"+(_jc++);
     const conditions=keywords.map(k=>"upper(taxpayer_name) like '%25"+k.toUpperCase()+"%25'").join(" OR ");
     const where="("+conditions+") AND upper(taxpayer_city)='"+city.toUpperCase()+"'";
-    const url="https://data.texas.gov/resource/9cir-efmm.json?$where="+encodeURI(where)+"&$limit="+limit+"&$order=taxpayer_name&$jsonp="+cb;
+    const url="https://data.texas.gov/resource/9cir-efmm.json?$where="+where.replace(/ /g,"%20")+"&$limit="+limit+"&$order=taxpayer_name&$jsonp="+cb;
     console.log("TX SODA URL:", url);
     window[cb]=function(d){
       console.log("TX SODA got "+((d&&d.length)||0)+" results");
@@ -270,7 +270,7 @@ function txQuery(city,keywords,limit){
       reject(new Error("TX SODA request failed"));
     };
     document.head.appendChild(s);
-    setTimeout(()=>{if(window[cb]){console.warn("TX SODA timeout for",cb);delete window[cb];try{document.head.removeChild(s);}catch(e){}reject(new Error("TX SODA timeout"));}},20000);
+    setTimeout(()=>{if(window[cb]){delete window[cb];try{document.head.removeChild(s);}catch(e){}reject(new Error("TX SODA timeout"));}},20000);
   });
 }
 
