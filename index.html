@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bowen Brothers Acquisition Scanner</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bk:#08080a;--wh:#fff;--g50:#fafafa;--g100:#f3f3f5;--g150:#eaeaed;--g200:#dcdce0;--g300:#c4c4cc;--g400:#9e9ea8;--g500:#6e6e78;--g600:#4e4e58;--g700:#363640;--g800:#222228;--gn50:#edfcf2;--gn100:#d3f9df;--gn500:#12b76a;--gn600:#039855;--gn700:#027a48;--yw50:#fffcf0;--yw100:#fef7c3;--yw600:#ca8504;--or50:#fff4ed;--or100:#ffe6d5;--or500:#ef6820;--rd50:#fef3f2;--f:'DM Sans',system-ui,sans-serif;--d:'Playfair Display',Georgia,serif;--m:'JetBrains Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--wh);color:var(--bk);-webkit-font-smoothing:antialiased;line-height:1.5}
+::selection{background:var(--bk);color:var(--wh)}
+a{color:var(--bk)}
+.ctr{max-width:1020px;margin:0 auto;padding:0 28px}
+.hdr{border-bottom:1px solid var(--g150);padding:18px 0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:200}
+.hdr-in{display:flex;align-items:center;gap:16px}
+.logo{width:44px;height:44px;background:var(--bk);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.logo svg{color:var(--wh)}
+.ht{font-family:var(--d);font-size:23px;font-weight:700;letter-spacing:-.03em}
+.hs{font-size:13px;color:var(--g500)}
+.sl{font-size:11px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sl::after{content:'';flex:1;height:1px;background:var(--g150)}
+.cl{font-size:10px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.14em;margin:4px 0 8px}
+.pr{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pill{padding:7px 16px;border-radius:100px;border:1.5px solid var(--g200);background:var(--wh);color:var(--g600);font-size:13px;font-family:var(--f);font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
+.pill:hover{border-color:var(--g400)}
+.pill.on{background:var(--bk);color:var(--wh);border-color:var(--bk)}
+.inp{width:100%;padding:11px 14px;border:1.5px solid var(--g200);border-radius:8px;font-size:14px;font-family:var(--f);color:var(--bk);background:var(--g50);outline:none;transition:border-color .15s}
+.inp:focus{border-color:var(--bk)}
+.lbl{font-size:12px;font-weight:600;color:var(--g500);display:block;margin-bottom:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:8px;font-size:14px;font-family:var(--f);font-weight:600;cursor:pointer;transition:all .15s;border:none;white-space:nowrap}
+.btn:hover:not(:disabled){opacity:.88}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.bp{background:var(--bk);color:var(--wh)}
+.bp.full{width:100%;padding:16px;font-size:15px;border-radius:12px}
+.bs{background:var(--wh);color:var(--bk);border:1.5px solid var(--g200)}
+.bg{background:none;border:none;color:var(--g500);font-size:12px;text-decoration:underline;cursor:pointer;padding:4px 8px;font-family:var(--f)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:7px;font-size:11px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.bg-g{background:var(--gn50);color:var(--gn700);border:1px solid var(--gn100)}
+.bg-y{background:var(--yw50);color:var(--yw600);border:1px solid var(--yw100)}
+.bg-gr{background:var(--g100);color:var(--g500);border:1px solid var(--g150)}
+.bg-o{background:var(--or50);color:var(--or500);border:1px solid var(--or100)}
+.bg-b{background:#eff6ff;color:#1d4ed8;border:1px solid #dbeafe}
+.vtag{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--gn600);font-weight:600;background:var(--gn50);padding:2px 6px;border-radius:4px;border:1px solid var(--gn100)}
+.utag{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--g400);font-weight:600;background:var(--g100);padding:2px 6px;border-radius:4px;border:1px solid var(--g150)}
+.ai-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#7c3aed;font-weight:600;background:#f5f3ff;padding:2px 6px;border-radius:4px;border:1px solid #e9d5ff}
+.tx-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--gn600);font-weight:600;background:var(--gn50);padding:2px 6px;border-radius:4px;border:1px solid var(--gn100)}
+.scan-st{text-align:center;padding:80px 0;display:none}
+.spw{width:68px;height:68px;margin:0 auto 28px;background:var(--bk);border-radius:16px;display:flex;align-items:center;justify-content:center}
+.sp{width:26px;height:26px;border:3px solid rgba(255,255,255,.2);border-top-color:var(--wh);border-radius:50%;animation:spin .75s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pt{max-width:420px;margin:0 auto;height:6px;background:var(--g150);border-radius:100px;overflow:hidden}
+.pf{height:100%;background:var(--bk);border-radius:100px;transition:width .5s ease}
+.log{background:var(--g800);border-radius:12px;padding:16px 20px;margin-top:20px;max-height:260px;overflow-y:auto;font-family:var(--m);font-size:11px;color:#a1a1aa;line-height:1.8;text-align:left}
+.log .ok{color:#4ade80}.log .wr{color:#facc15}.log .er{color:#f87171}.log .in{color:#60a5fa}
+.sr{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.sc{padding:15px 18px;background:var(--wh);border-radius:12px;border:1px solid var(--g150)}
+.sc .l{font-size:10px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.1em}
+.sc .v{font-family:var(--m);font-size:30px;font-weight:700;margin-top:2px}
+.fb{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--g150)}
+.fr{margin-left:auto;display:flex;align-items:center;gap:10px}
+.si{padding:8px 12px;border:1.5px solid var(--g200);border-radius:8px;font-size:13px;font-family:var(--f);width:220px;outline:none;background:var(--wh)}
+.si:focus{border-color:var(--bk)}
+.ss{padding:8px 12px;border:1.5px solid var(--g200);border-radius:8px;font-size:13px;font-family:var(--f);background:var(--wh);outline:none;cursor:pointer}
+.rc{border:1.5px solid var(--g200);border-radius:16px;background:var(--wh);overflow:hidden;transition:all .2s;margin-bottom:14px}
+.rc:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.rc.sel{border-color:var(--bk)}
+.ch{padding:18px 22px;display:flex;align-items:flex-start;gap:16px}
+.cb{width:22px;height:22px;border-radius:7px;border:2px solid var(--g300);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s;background:var(--wh);flex-shrink:0;margin-top:3px}
+.cb.ck{background:var(--bk);border-color:var(--bk)}
+.cb.ck svg{display:block}
+.cb svg{display:none;color:var(--wh)}
+.ct{font-size:17px;font-weight:700;color:var(--bk);text-decoration:none;transition:opacity .15s}
+.ct:hover{opacity:.65}
+.cm{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--g500)}
+.cm .dot{color:var(--g300)}
+.cm .star{color:#f59e0b}
+.sb{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--m);font-size:22px;font-weight:700;flex-shrink:0}
+.sb.hi{background:var(--gn50);color:var(--gn700)}
+.sb.wa{background:var(--yw50);color:var(--yw600)}
+.sb.lo{background:var(--g100);color:var(--g500)}
+.cq{padding:10px 22px;background:var(--g50);border-top:1px solid var(--g100);border-bottom:1px solid var(--g100);display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--g600)}
+.cq .sep{color:var(--g200)}
+.cw{padding:12px 22px;background:var(--yw50);border-bottom:1px solid var(--g100);font-size:12.5px;color:var(--g700);line-height:1.55}
+.cd{padding:18px 22px}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.dt{font-size:11px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.cr{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:4px 0}
+.ci{flex-shrink:0;width:16px;display:flex;align-items:center}
+.ci.fo{color:var(--gn500)}
+.ci.mi{color:var(--g300)}
+.cll{min-width:100px;font-weight:500;color:var(--g500)}
+.cv{color:var(--bk);font-family:var(--m);font-size:12px;word-break:break-all}
+.cv.na{color:var(--g400);font-family:var(--f);font-style:italic}
+.sig{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--g600);padding:3px 0}
+.rl{display:flex;flex-direction:column;gap:0;padding-bottom:48px}
+.nr{text-align:center;padding:80px 0;color:var(--g400)}
+.page{display:none}
+.page.active{display:block}
+.rhb{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.eg{display:flex;gap:8px}
+.api-b{background:#eff6ff;border:1px solid #dbeafe;border-radius:12px;padding:20px 24px;margin-bottom:24px}
+.api-b h3{font-size:15px;font-weight:700;margin-bottom:8px;color:#1d4ed8}
+.api-b p{font-size:13px;color:var(--g600);line-height:1.6}
+.key-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.key-grid label{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:5px}
+.key-grid label span{font-weight:400;text-transform:none;letter-spacing:0}
+.key-grid input{width:100%;padding:10px 12px;border:1.5px solid var(--g200);border-radius:8px;font-family:var(--m);font-size:12px;outline:none;background:var(--wh)}
+.key-grid input:focus{border-color:var(--bk)}
+@media(max-width:768px){.sr{grid-template-columns:repeat(2,1fr)}.dg{grid-template-columns:1fr}.fb{flex-direction:column;align-items:flex-start}.fr{margin-left:0;width:100%;flex-wrap:wrap}.si{width:100%}.rhb{flex-direction:column;align-items:flex-start}.eg{width:100%;flex-wrap:wrap}.key-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="scanPage" class="page active">
+  <div class="hdr"><div class="ctr"><div class="hdr-in">
+    <div class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg></div>
+    <div><div class="ht">Bowen Brothers Acquisition Scanner</div><div class="hs">TX State Records + Google Places + Claude AI · Multi-source verified data</div></div>
+  </div></div></div>
+  <div class="ctr" style="padding-top:28px;padding-bottom:60px;">
+    <div class="api-b">
+      <h3>🔑 API Configuration</h3>
+      <p>Enter your API keys below. The Texas Open Data query requires <strong>no key</strong>. Google and Claude are optional but dramatically improve results.</p>
+      <div class="key-grid">
+        <div>
+          <label>Google Places API Key <span style="color:#1d4ed8;">— phone, rating, reviews</span></label>
+          <input type="password" id="kGoogle" placeholder="AIza..." autocomplete="off">
+        </div>
+        <div>
+          <label>TX Comptroller Tax Accounts Key <span style="color:var(--gn600);">— owner names</span></label>
+          <input type="password" id="kTxTax" placeholder="Your CPA Tax Accounts key" autocomplete="off">
+        </div>
+        <div>
+          <label>Claude API Key <span style="color:#7c3aed;">— AI deal analysis</span></label>
+          <input type="password" id="kClaude" placeholder="sk-ant-..." autocomplete="off">
+        </div>
+        <div>
+          <label>TX Comptroller SIFT Key <span style="color:var(--g400);">— bulk data (future)</span></label>
+          <input type="password" id="kSift" placeholder="Your SIFT key" autocomplete="off">
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center;">
+        <button class="btn bp" onclick="saveKeys()" style="height:38px;">Save All Keys</button>
+        <span id="keyStatus" style="font-size:12px;color:var(--g400);"></span>
+      </div>
+    </div>
+    <div id="formSection">
+      <div style="margin-bottom:36px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="sl" style="margin-bottom:0;">Target Industries</div>
+          <div style="display:flex;gap:8px;"><button class="bg" onclick="selAll()">Select All</button><button class="bg" onclick="clrAll()">Clear</button></div>
+        </div>
+        <div id="pills"></div>
+      </div>
+      <div style="margin-bottom:36px;">
+        <div class="sl">Search Area</div>
+        <div style="display:grid;grid-template-columns:1fr 200px;gap:20px;align-items:start;">
+          <div><label class="lbl">City (Texas)</label><input id="cityInput" class="inp" type="text" value="HOUSTON"></div>
+          <div><label class="lbl">Max Results Per Industry</label><input id="limitInput" class="inp" type="number" value="100" min="10" max="500" style="font-family:var(--m);"></div>
+        </div>
+      </div>
+      <button id="scanBtn" class="btn bp full" onclick="startScan()" disabled>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span id="scanBtnText">Select at least one industry</span>
+      </button>
+    </div>
+    <div id="scanState" class="scan-st">
+      <div class="spw"><div class="sp"></div></div>
+      <div style="font-family:var(--d);font-size:28px;font-weight:400;margin-bottom:6px;">Scanning Texas State Records</div>
+      <div style="color:var(--g500);font-size:14px;margin-bottom:36px;" id="scanSub">HOUSTON · 0 industries</div>
+      <div class="pt"><div id="pf" class="pf" style="width:0%"></div></div>
+      <div id="scanPct" style="font-family:var(--m);font-size:12px;color:var(--g400);margin-top:12px;">0%</div>
+      <div id="scanStep" style="font-size:13px;color:var(--g500);margin-top:8px;">Initializing...</div>
+      <div id="logPanel" class="log"></div>
+    </div>
+  </div>
+</div>
+<div id="resultsPage" class="page">
+  <div class="hdr"><div class="ctr"><div class="rhb">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <button class="btn bs" style="padding:6px 14px;font-size:12px;border-radius:7px;" onclick="backToScan()">← Back</button>
+      <div><div class="ht" style="font-size:19px;">Scan Results</div><div class="hs" id="resSub">0 leads</div></div>
+    </div>
+    <div class="eg">
+      <button class="btn bp" style="padding:8px 16px;font-size:12px;border-radius:8px;" onclick="exportCSV('all')">↓ Export All</button>
+      <button class="btn bs" style="padding:8px 16px;font-size:12px;border-radius:8px;" onclick="exportCSV('high')">↓ High Priority</button>
+      <button class="btn bs" style="padding:8px 16px;font-size:12px;border-radius:8px;" onclick="exportCSV('sel')" id="exSelBtn" disabled><span id="exSelLbl">↓ Selected (0)</span></button>
+    </div>
+  </div></div></div>
+  <div class="ctr" style="padding-top:22px;">
+    <div class="sr" id="statsRow"></div>
+    <div class="fb">
+      <div id="tierF" class="pr" style="margin-bottom:0;"></div>
+      <div class="fr">
+        <input class="si" type="text" placeholder="Search..." id="searchI" oninput="applyF()">
+        <select class="ss" id="sortS" onchange="applyF()">
+          <option value="score">Sort: Score</option><option value="rating">Sort: Rating</option><option value="reviews">Sort: Reviews</option><option value="name">Sort: Name</option>
+        </select>
+      </div>
+    </div>
+    <div id="resList" class="rl"></div>
+  </div>
+</div>
+<script>
+const IND=[
+{id:"cleaning",label:"Commercial Cleaning",cat:"B2B Services",kw:["cleaning","janitorial","custodial","maid"]},
+{id:"pest",label:"Pest Control",cat:"B2B Services",kw:["pest","exterminator","termite","bug"]},
+{id:"hvac",label:"HVAC",cat:"B2B Services",kw:["hvac","heating","air conditioning","cooling"]},
+{id:"landscape",label:"Landscaping",cat:"B2B Services",kw:["landscape","landscaping","lawn","mowing","tree","turf"]},
+{id:"plumbing",label:"Plumbing",cat:"Specialty Trades",kw:["plumbing","plumber","drain","pipe","sewer"]},
+{id:"electrical",label:"Electrical",cat:"Specialty Trades",kw:["electric","electrical","wiring","electrician"]},
+{id:"restoration",label:"Restoration",cat:"Specialty Trades",kw:["restoration","remediation","mold","water damage","fire damage"]},
+{id:"tire",label:"Tire Shop",cat:"Auto-Related",kw:["tire","tires","wheel"]},
+{id:"detail",label:"Detailing",cat:"Auto-Related",kw:["detail","detailing","auto spa","car wash","polish"]},
+{id:"transmission",label:"Transmission",cat:"Auto-Related",kw:["transmission","drivetrain","gear"]}
+];
+const CATS=["B2B Services","Specialty Trades","Auto-Related"];
+const FRAN=["servpro","servicemaster","stanley steemer","jani-king","jan-pro","coverall","anago","buildingstars","stratus building","office pride","vanguard","openworks","360clean","cleannet","terminix","orkin","abc home","aptive","bulwark","truly nolen","massey services","arrow exterminators","mosquito joe","mosquito squad","mosquito authority","pest authority","hawx pest","one hour heating","one hour air","aire serv","service experts","goettl","mr. rooter","roto-rooter","benjamin franklin plumbing","1-800-plumber","bluefrog plumbing","mister sparky","mr. electric","puroclean","rainbow restoration","paul davis","belfor","restoration 1","trugreen","lawn doctor","weed man","spring green","u.s. lawns","brightview","the grounds guys","naturalawn","midas","jiffy lube","firestone","goodyear","discount tire","maaco","aamco","meineke","precision tune","christian brothers","caliber collision","pep boys","valvoline","take 5","grease monkey","big o tires","les schwab","tires plus","cottman transmission","mr. transmission","eagle transmission","ziebart","tint world","detail garage","neighborly","mr. handyman","mr. appliance","glass doctor","five star painting","molly maid","merry maids","the maids","chem-dry","oxi fresh","home depot","lowe's","ace hardware"];
+
+let GKEY="",TXKEY="",CLKEY="",SKEY="";
+let selI=new Set(),allR=[],selIds=new Set(),expC=new Set(),curF="ALL";
+
+function saveKeys(){
+  GKEY=document.getElementById("kGoogle").value.trim();
+  TXKEY=document.getElementById("kTxTax").value.trim();
+  CLKEY=document.getElementById("kClaude").value.trim();
+  SKEY=document.getElementById("kSift").value.trim();
+  const p=[];
+  p.push('<span style="color:var(--gn600);">✓ TX SODA (always on)</span>');
+  if(TXKEY)p.push('<span style="color:var(--gn600);">✓ TX Tax Accounts</span>');
+  if(GKEY)p.push('<span style="color:#1d4ed8;">✓ Google Places</span>');
+  if(CLKEY)p.push('<span style="color:#7c3aed;">✓ Claude AI</span>');
+  document.getElementById("keyStatus").innerHTML=p.join(" · ");
+  updateBtn();
+}
+
+// PILLS
+function renderPills(){
+  const w=document.getElementById("pills");
+  w.innerHTML=CATS.map(c=>`<div class="cl">${c}</div><div class="pr">${IND.filter(i=>i.cat===c).map(i=>`<button class="pill ${selI.has(i.id)?'on':''}" onclick="tog('${i.id}')">${i.label}</button>`).join("")}</div>`).join("");
+  updateBtn();
+}
+function tog(id){selI.has(id)?selI.delete(id):selI.add(id);renderPills();}
+function selAll(){IND.forEach(i=>selI.add(i.id));renderPills();}
+function clrAll(){selI.clear();renderPills();}
+function updateBtn(){
+  const n=selI.size;
+  document.getElementById("scanBtn").disabled=n===0;
+  document.getElementById("scanBtnText").textContent=n===0?"Select at least one industry":`Scan ${n} Industr${n===1?"y":"ies"}`;
+}
+
+// TEXAS SODA API — JSONP (works from any domain, no CORS issues)
+let _jc=0;
+function txQuery(city,keywords,limit){
+  return new Promise((resolve,reject)=>{
+    const cb="_tx"+(_jc++);
+    const kw=keywords.map(k=>`upper(taxpayer_name) like '%${k.toUpperCase()}%'`).join(" OR ");
+    const q=`$where=(${kw}) AND upper(taxpayer_city)='${city.toUpperCase()}'&$limit=${limit}&$order=taxpayer_name&$jsonp=${cb}`;
+    window[cb]=function(d){delete window[cb];document.head.removeChild(s);resolve(Array.isArray(d)?d:[]);};
+    const s=document.createElement("script");
+    s.src="https://data.texas.gov/resource/9cir-efmm.json?"+q;
+    s.onerror=()=>{delete window[cb];document.head.removeChild(s);reject(new Error("TX SODA request failed"));};
+    document.head.appendChild(s);
+    setTimeout(()=>{if(window[cb]){delete window[cb];try{document.head.removeChild(s);}catch(e){}reject(new Error("TX SODA timeout"));}},20000);
+  });
+}
+
+// TX TAX ACCOUNTS API
+async function txLookup(tpNum){
+  if(!TXKEY||!tpNum)return null;
+  try{
+    const r=await fetch(`https://api.comptroller.texas.gov/public-data/v1/public/franchise-tax/${tpNum}`,{headers:{"x-api-key":TXKEY}});
+    if(!r.ok)return null;return await r.json();
+  }catch(e){return null;}
+}
+
+// GOOGLE PLACES
+let _ml=false,_ps=null;
+function loadG(){
+  return new Promise((res,rej)=>{
+    if(_ml){res();return;}
+    const d=document.createElement("div");d.style.display="none";document.body.appendChild(d);
+    window._gmR=()=>{_ml=true;_ps=new google.maps.places.PlacesService(new google.maps.Map(d,{center:{lat:29.76,lng:-95.37},zoom:10}));res();};
+    const s=document.createElement("script");
+    s.src=`https://maps.googleapis.com/maps/api/js?key=${GKEY}&libraries=places&callback=_gmR`;
+    s.onerror=()=>rej(new Error("Google Maps failed"));
+    document.head.appendChild(s);
+  });
+}
+function gFind(name,addr){
+  return new Promise(r=>{_ps.findPlaceFromQuery({query:name+" "+addr,fields:["place_id","name","formatted_address","rating","user_ratings_total","business_status"]},(res,st)=>{r(st==="OK"&&res?res[0]:null);});});
+}
+function gDetails(pid){
+  return new Promise((res,rej)=>{_ps.getDetails({placeId:pid,fields:["place_id","name","formatted_address","formatted_phone_number","international_phone_number","website","rating","user_ratings_total","business_status","url","types","reviews","opening_hours"]},(p,st)=>{st==="OK"&&p?res(p):rej(new Error(st));});});
+}
+
+// CLAUDE AI
+async function aiAnalyze(biz){
+  if(!CLKEY)return null;
+  try{
+    const prompt=`You are an expert small business acquisition analyst. Analyze this as a potential off-market acquisition target ($200K-$1M). Be specific, 2-3 sentences.\n\nBusiness: ${biz.name}\nIndustry: ${biz.industry}\nAddress: ${biz.addr}\n${biz.ownerName?"Owner: "+biz.ownerName:""}\n${biz.rating?"Rating: "+biz.rating+"★ ("+biz.reviews+" reviews)":""}\n${biz.website?"Website: "+biz.website:"No website"}\nSignals: ${biz.signals.join("; ")}`;
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":CLKEY,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:200,messages:[{role:"user",content:prompt}]})});
+    if(!r.ok)return null;
+    const d=await r.json();return d.content?.[0]?.text||null;
+  }catch(e){return null;}
+}
+
+function isFran(n){const l=n.toLowerCase();return FRAN.some(f=>l.includes(f));}
+
+// BUILD RESULT
+function buildR(tx,g,ind,taxA,ai){
+  let sc=0,sig=[];
+  const name=tx.taxpayer_name||"Unknown";
+  const addr=tx.taxpayer_address||"";
+  const city=tx.taxpayer_city||"";
+  const state=tx.taxpayer_state||"TX";
+  const zip=tx.taxpayer_zip||"";
+  const sos=tx.sos_charter_number||tx.taxpayer_number||"";
+  const fullA=`${addr}, ${city}, ${state} ${zip}`.replace(/^,\s*/,"");
+  let ownerName=null,officers=[];
+  if(taxA&&taxA.officers&&taxA.officers.length>0){
+    officers=taxA.officers.map(o=>({name:[o.firstName,o.middleName,o.lastName].filter(Boolean).join(" ")||o.name||"Unknown",title:o.title||o.officerTitle||"Officer"}));
+    ownerName=officers.map(o=>`${o.name} (${o.title})`).join("; ");
+  }
+  const gg=g||{};
+  const phone=gg.formatted_phone_number||null;
+  const website=gg.website||null;
+  const rating=gg.rating||null;
+  const reviews=gg.user_ratings_total||0;
+  const mapsUrl=gg.url||null;
+  const status=gg.business_status||"UNKNOWN";
+  const hasH=!!gg.opening_hours;
+
+  sc+=8;sig.push("Active TX franchise tax permit");
+  if(sos){sc+=3;sig.push("SOS#: "+sos);}
+  if(ownerName){sc+=10;sig.push("Owner: "+officers.map(o=>o.name).join(", "));}
+  if(rating){
+    if(rating>=3.5&&rating<=4.2){sc+=18;sig.push(`${rating}★ sweet spot`);}
+    else if(rating>=4.3&&rating<=4.5){sc+=10;sig.push(`${rating}★ above sweet spot`);}
+    else if(rating>=3.0&&rating<3.5){sc+=8;sig.push(`${rating}★ below avg`);}
+    else{sc+=3;sig.push(`${rating}★`);}
+  }
+  if(reviews>=200){sc+=16;sig.push(`${reviews} reviews — established`);}
+  else if(reviews>=100){sc+=12;sig.push(`${reviews} reviews`);}
+  else if(reviews>=40){sc+=9;sig.push(`${reviews} reviews`);}
+  else if(reviews>=15){sc+=5;sig.push(`${reviews} reviews`);}
+  if(g&&!website){sc+=12;sig.push("No website — digital neglect");}
+  if(g&&!phone){sc+=5;sig.push("No phone listed");}
+  if(g&&!hasH){sc+=4;sig.push("No hours listed");}
+  if(gg.reviews&&gg.reviews.length>0){
+    const s2=[...gg.reviews].sort((a,b)=>b.time-a.time);
+    const days=Math.floor((Date.now()-s2[0].time*1000)/864e5);
+    if(days>365&&reviews>15){sc+=10;sig.push(`Last review ${days}d ago`);}
+    else if(days>180&&reviews>10){sc+=7;sig.push(`No reviews in ${days}d`);}
+    if(s2.length>=3){const rA=s2.slice(0,3).reduce((x,r)=>x+r.rating,0)/3;const oA=s2.slice(-3).reduce((x,r)=>x+r.rating,0)/Math.min(3,s2.length);if(rA<oA-.5){sc+=5;sig.push(`Reviews declining (${rA.toFixed(1)}★→${oA.toFixed(1)}★)`);}}
+  }
+  if(!g){sc+=8;sig.push("No Google profile — very low digital presence");}
+  sc=Math.min(sc,100);
+  const tier=sc>=55?"HIGH":sc>=30?"WATCH":"LOW";
+  let v=0,t=16;
+  [name!=="Unknown",addr,city,zip,sos,ownerName,phone,website!==undefined,rating,reviews>0,status!=="UNKNOWN",hasH,mapsUrl,!!taxA,!!ai,!!g].forEach(x=>{if(x)v++;});
+  const conf=Math.round(v/t*100);
+  const why=ai||sig.slice(0,4).join(". ")+".";
+  let rTrend="Unknown",lastRD=null,dSL=null;
+  if(gg.reviews&&gg.reviews.length>0){const s3=[...gg.reviews].sort((a,b)=>b.time-a.time);lastRD=new Date(s3[0].time*1000).toLocaleDateString();dSL=Math.floor((Date.now()-s3[0].time*1000)/864e5);if(s3.length>=3){const rA=s3.slice(0,3).reduce((x,r)=>x+r.rating,0)/3;const oA=s3.slice(-3).reduce((x,r)=>x+r.rating,0)/Math.min(3,s3.length);rTrend=rA<oA-.3?"Declining":rA>oA+.3?"Improving":"Stable";}}
+  return{id:sos||name.replace(/\s/g,"_"),name,addr:fullA,streetAddr:addr,city,state,zip,sosNum:sos,tpNum:tx.taxpayer_number||"",ownerName,officers,phone,website,rating,reviews,mapsUrl,status,industry:ind.label,score:sc,tier,signals:sig,whyDeal:why,confidence:conf,hasH,rTrend,lastRD,dSL,gMatch:!!g,txMatch:!!taxA,aiMatch:!!ai,aiText:ai,revSnip:(gg.reviews||[]).slice(0,2).map(r=>({rating:r.rating,text:(r.text||"").substring(0,100),time:new Date(r.time*1000).toLocaleDateString()}))};
+}
+
+// LOGGING
+function log(m,c=""){const p=document.getElementById("logPanel");p.innerHTML+=`<div class="${c}">› ${m}</div>`;p.scrollTop=99999;}
+
+// SCAN
+async function startScan(){
+  if(!selI.size)return;
+  document.getElementById("formSection").style.display="none";
+  document.getElementById("scanState").style.display="block";
+  const city=document.getElementById("cityInput").value.trim()||"HOUSTON";
+  const limit=parseInt(document.getElementById("limitInput").value)||100;
+  document.getElementById("scanSub").textContent=`${city} · ${selI.size} industries`;
+  document.getElementById("logPanel").innerHTML="";
+  document.getElementById("pf").style.width="0%";
+  allR=[];
+  const inds=IND.filter(i=>selI.has(i.id));
+  let fC=0,done=0;const seen=new Set();
+  let hasG=false;
+  if(GKEY){try{log("Loading Google Maps...","in");document.getElementById("scanStep").textContent="Loading Google Maps...";await loadG();hasG=true;log("Google Maps ready","ok");}catch(e){log("Google Maps failed: "+e.message,"wr");}}
+  if(TXKEY)log("TX Tax Accounts API ready","ok");
+  if(CLKEY)log("Claude AI ready for HIGH priority leads","ok");
+
+  for(const ind of inds){
+    document.getElementById("scanStep").textContent=`TX Comptroller: ${ind.label}...`;
+    log(`\nSearching TX records: "${ind.kw.join(', ')}" in ${city}...`,"in");
+    try{
+      const txR=await txQuery(city,ind.kw,limit);
+      log(`Found ${txR.length} state records for ${ind.label}`,"ok");
+      for(const tx of txR){
+        const name=tx.taxpayer_name||"";
+        const key=name.toUpperCase()+(tx.taxpayer_address||"");
+        if(seen.has(key))continue;seen.add(key);
+        if(isFran(name)){fC++;log(`  ✗ Franchise: ${name}`,"er");continue;}
+
+        let taxA=null;
+        if(TXKEY&&tx.taxpayer_number){
+          try{taxA=await txLookup(tx.taxpayer_number);if(taxA?.officers?.length)log(`  👤 Owner found: ${taxA.officers.map(o=>[o.firstName,o.lastName].filter(Boolean).join(" ")).join(", ")}`,"ok");await new Promise(r=>setTimeout(r,100));}catch(e){}
+        }
+
+        let g=null;
+        if(hasG){
+          try{const f=await gFind(name,`${tx.taxpayer_address||""} ${city} TX`);if(f?.place_id){g=await gDetails(f.place_id);if(g.rating&&g.rating<3.0){log(`  ✗ Low rating (${g.rating}★): ${name}`,"er");continue;}}await new Promise(r=>setTimeout(r,150));}catch(e){}
+        }
+
+        const result=buildR(tx,g,ind,taxA,null);
+        if(result.confidence<25)continue;
+
+        if(CLKEY&&result.tier==="HIGH"){
+          try{document.getElementById("scanStep").textContent=`AI: ${name}...`;const ai=await aiAnalyze(result);if(ai){result.aiText=ai;result.whyDeal=ai;result.aiMatch=true;log(`  🤖 AI analyzed: ${name}`,"ok");}}catch(e){}
+        }
+
+        const oTag=result.ownerName?`👤${result.officers[0]?.name}`:"no owner";
+        const gTag=g?`${result.rating||"?"}★/${result.reviews}rev`:"no Google";
+        log(`  ✓ ${name} — Sc:${result.score} | ${oTag} | ${gTag}`,"ok");
+        allR.push(result);
+      }
+    }catch(e){log(`Error: ${ind.label}: ${e.message}`,"er");}
+    done++;document.getElementById("pf").style.width=Math.round(done/inds.length*100)+"%";
+    document.getElementById("scanPct").textContent=Math.round(done/inds.length*100)+"%";
+    if(done<inds.length)await new Promise(r=>setTimeout(r,300));
+  }
+  allR.sort((a,b)=>b.score-a.score);
+  log("","");log("═══ SCAN COMPLETE ═══","in");
+  log(`${allR.length} verified leads`,"ok");
+  if(fC)log(`${fC} franchises excluded`,"er");
+  const wO=allR.filter(b=>b.ownerName).length;if(wO)log(`${wO} with owner names identified`,"ok");
+  document.getElementById("scanStep").textContent="Complete";
+  document.getElementById("pf").style.width="100%";document.getElementById("scanPct").textContent="100%";
+  setTimeout(showResults,800);
+}
+
+// RESULTS
+function showResults(){
+  document.getElementById("scanPage").classList.remove("active");
+  document.getElementById("resultsPage").classList.add("active");
+  window.scrollTo(0,0);selIds.clear();expC.clear();curF="ALL";
+  const h=allR.filter(b=>b.tier==="HIGH").length,w=allR.filter(b=>b.tier==="WATCH").length,l=allR.filter(b=>b.tier==="LOW").length;
+  document.getElementById("resSub").textContent=`${allR.length} leads · ${h} high priority`;
+  document.getElementById("statsRow").innerHTML=[{l:"Total",v:allR.length,c:"var(--bk)"},{l:"High Priority",v:h,c:"var(--gn600)"},{l:"Watch",v:w,c:"var(--yw600)"},{l:"Low Signal",v:l,c:"var(--g400)"}].map(s=>`<div class="sc"><div class="l">${s.l}</div><div class="v" style="color:${s.c}">${s.v}</div></div>`).join("");
+  document.getElementById("tierF").innerHTML=[{k:"ALL",l:"All"},{k:"HIGH",l:"🟢 High"},{k:"WATCH",l:"🟡 Watch"},{k:"LOW",l:"⚪ Low"}].map(t=>`<button class="pill ${curF===t.k?'on':''}" onclick="curF='${t.k}';rTP();applyF();">${t.l}</button>`).join("");
+  applyF();
+}
+function rTP(){document.querySelectorAll("#tierF .pill").forEach((p,i)=>{p.className="pill"+(curF===["ALL","HIGH","WATCH","LOW"][i]?" on":"");});}
+function applyF(){
+  const q=(document.getElementById("searchI").value||"").toLowerCase();
+  const s=document.getElementById("sortS").value;
+  let list=[...allR];
+  if(curF!=="ALL")list=list.filter(b=>b.tier===curF);
+  if(q)list=list.filter(b=>(b.name+b.industry+b.addr+(b.ownerName||"")).toLowerCase().includes(q));
+  if(s==="score")list.sort((a,b)=>b.score-a.score);
+  else if(s==="rating")list.sort((a,b)=>(b.rating||0)-(a.rating||0));
+  else if(s==="reviews")list.sort((a,b)=>b.reviews-a.reviews);
+  else list.sort((a,b)=>a.name.localeCompare(b.name));
+  renderR(list);
+}
+function renderR(list){
+  const c=document.getElementById("resList");
+  if(!list.length){c.innerHTML='<div class="nr"><p style="font-size:16px;font-weight:600;">No results</p></div>';return;}
+  const ck=f=>f?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  const cr=(l,v,tag,note)=>`<div class="cr"><div class="ci ${v?'fo':'mi'}">${ck(!!v)}</div><span class="cll">${l}</span><span class="cv ${v?'':'na'}">${v||note||'N/A'}</span>${tag||''}</div>`;
+  c.innerHTML=list.map(b=>{
+    const s=selIds.has(b.id),e=expC.has(b.id);
+    const tc=b.tier==="HIGH"?"hi":b.tier==="WATCH"?"wa":"lo";
+    const tl=b.tier==="HIGH"?"🟢 HIGH":b.tier==="WATCH"?"🟡 WATCH":"⚪ LOW";
+    const tb=b.tier==="HIGH"?"bg-g":b.tier==="WATCH"?"bg-y":"bg-gr";
+    const link=b.website||b.mapsUrl||"#";
+    return `<div class="rc ${s?'sel':''}" data-id="${b.id}">
+<div class="ch">
+<div class="cb ${s?'ck':''}" onclick="tSel('${b.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div style="flex:1;min-width:0;">
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+<a href="${link}" target="_blank" class="ct">${b.name}</a>
+<span class="badge ${tb}">${tl}</span>
+<span class="vtag">TX STATE</span>
+${b.txMatch?'<span class="tx-tag">TX TAX</span>':''}
+${b.gMatch?'<span class="badge bg-b">GOOGLE</span>':''}
+${b.aiMatch?'<span class="ai-tag">🤖 AI</span>':''}
+</div>
+<div class="cm">
+<span>${b.industry}</span><span class="dot">·</span>
+${b.ownerName?`<span style="font-weight:600;color:var(--bk);">👤 ${b.officers[0]?.name||''}</span><span class="dot">·</span>`:''}
+<span>${b.city}, ${b.state} ${b.zip}</span>
+${b.rating?`<span class="dot">·</span><span><span class="star">★</span>${b.rating} (${b.reviews})</span>`:''}
+</div></div>
+<div style="text-align:center;flex-shrink:0;"><div class="sb ${tc}">${b.score}</div><div style="font-size:9px;font-weight:700;color:var(--g400);text-transform:uppercase;margin-top:3px;">Score</div></div>
+</div>
+<div class="cq">
+<span><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${b.confidence>=60?'var(--gn500)':'var(--or500)'};margin-right:4px;"></span>${b.confidence}%</span>
+<span class="sep">|</span>
+${b.ownerName?'<span style="color:var(--gn700);font-weight:600;">👤 Owner ID\'d</span><span class="sep">|</span>':''}
+<span>${b.gMatch?(b.status==="OPERATIONAL"?"✓ Open":"⚠ "+b.status):"State only"}</span>
+${b.reviews?`<span class="sep">|</span><span>${b.reviews} rev (${b.rTrend})</span>`:''}
+${b.dSL!==null?`<span class="sep">|</span><span>Last rev: ${b.dSL}d</span>`:''}
+<span style="margin-left:auto;"><button class="btn bs" style="padding:4px 12px;font-size:11px;border-radius:6px;" onclick="tExp('${b.id}')">${e?'Collapse':'Expand'}</button></span>
+</div>
+<div class="cw">${b.aiMatch?'<span style="font-weight:700;color:#7c3aed;">🤖 AI ANALYSIS:</span>':'<span style="font-weight:700;color:var(--yw600);">WHY THIS DEAL:</span>'} ${b.whyDeal}</div>
+${e?`<div class="cd"><div class="dg"><div>
+<div class="dt">State Record <span class="vtag" style="margin-left:8px;">TX Comptroller</span></div>
+${cr("Legal Name",b.name)}
+${cr("Address",b.addr)}
+${cr("ZIP",b.zip)}
+${cr("SOS#",b.sosNum||null)}
+${cr("Taxpayer#",b.tpNum||null)}
+${b.txMatch||b.ownerName?`<div style="margin-top:14px;"><div class="dt">Owner/Officers <span class="tx-tag" style="margin-left:8px;">TX TAX</span></div>${b.officers.length?b.officers.map(o=>cr(o.title,o.name)).join(''):'<div class="cr"><span class="cv na">Not available</span></div>'}</div>`:`<div style="margin-top:14px;"><div class="dt">Owner <span class="utag" style="margin-left:8px;">Not retrieved</span></div>${cr("Owner",null,null,"Add TX Tax key")}</div>`}
+<div style="margin-top:14px;"><div class="dt">Google ${b.gMatch?'<span class="badge bg-b" style="margin-left:8px;">VERIFIED</span>':''}</div>
+${cr("Phone",b.phone)}
+${cr("Website",b.website?`<a href="${b.website}" target="_blank" style="color:var(--bk);">${b.website}</a>`:null)}
+${cr("Rating",b.rating?b.rating+'★ ('+b.reviews+')':null)}
+${cr("Status",b.status!=="UNKNOWN"?b.status:null)}
+${b.mapsUrl?`<div style="margin-top:4px;font-size:11px;"><a href="${b.mapsUrl}" target="_blank" style="color:#1d4ed8;">→ Google Maps</a></div>`:''}
+</div></div>
+<div>
+<div class="dt">Signals</div>
+${b.signals.map(s=>`<div class="sig"><span style="color:var(--gn500);font-size:10px;">●</span><span>${s}</span></div>`).join("")}
+${b.aiText?`<div style="margin-top:14px;padding:12px;background:#f5f3ff;border:1px solid #e9d5ff;border-radius:8px;"><div style="font-size:11px;font-weight:700;color:#7c3aed;margin-bottom:6px;">🤖 Claude AI Analysis</div><div style="font-size:12.5px;color:var(--g700);line-height:1.6;">${b.aiText}</div></div>`:''}
+${b.revSnip?.length?`<div style="margin-top:14px;"><div class="dt">Recent Reviews</div>${b.revSnip.map(r=>`<div style="font-size:11px;padding:6px 8px;background:var(--g50);border-radius:6px;margin-bottom:4px;border:1px solid var(--g150);"><span style="color:#f59e0b;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span> ${r.time}<br>${r.text}${r.text.length>=100?'...':''}</div>`).join('')}</div>`:''}
+<div style="margin-top:14px;"><div class="dt">Next Steps <span class="utag" style="margin-left:8px;">Manual</span></div>
+${!b.ownerName?cr("Owner",null,null,'<a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">SOSDirect</a>'):''} 
+${cr("Owner Phone",null,null,"Skip trace")}
+${cr("Property Tax",null,null,'<a href="https://public.hcad.org/" target="_blank">HCAD</a>')}
+${cr("UCC Filings",null,null,'<a href="https://www.sos.state.tx.us/ucc/" target="_blank">TX SOS</a>')}
+</div></div></div></div>`:''}
+</div>`;}).join("");
+}
+function tSel(id){selIds.has(id)?selIds.delete(id):selIds.add(id);document.getElementById("exSelLbl").textContent="↓ Selected ("+selIds.size+")";document.getElementById("exSelBtn").disabled=!selIds.size;applyF();}
+function tExp(id){expC.has(id)?expC.delete(id):expC.add(id);applyF();}
+function backToScan(){document.getElementById("resultsPage").classList.remove("active");document.getElementById("scanPage").classList.add("active");window.scrollTo(0,0);document.getElementById("scanState").style.display="none";document.getElementById("formSection").style.display="";}
+
+function exportCSV(mode){
+  let list;if(mode==="all")list=allR;else if(mode==="high")list=allR.filter(b=>b.tier==="HIGH");else list=allR.filter(b=>selIds.has(b.id));
+  if(!list.length)return;
+  const tl=t=>t==="HIGH"?"HIGH PRIORITY":t==="WATCH"?"WATCH":"LOW SIGNAL";
+  const h=["Business Name","Score","Tier","Confidence","Industry","Owner/Officers","Address","City","State","ZIP","SOS#","Taxpayer#","Phone","Website","Rating","Reviews","Review Trend","Status","Google Match","TX Tax Match","AI Analysis","Signals","Why This Deal"];
+  const rows=list.map(b=>[b.name,b.score,tl(b.tier),b.confidence+"%",b.industry,b.ownerName||"N/A",b.streetAddr,b.city,b.state,b.zip,b.sosNum,b.tpNum,b.phone||"N/A",b.website||"N/A",b.rating||"N/A",b.reviews,b.rTrend,b.status,b.gMatch?"Yes":"No",b.txMatch?"Yes":"No",b.aiText||"N/A",b.signals.join("; "),b.whyDeal]);
+  const csv=[h,...rows].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv"}));
+  a.download=`AcquisitionLeads_${new Date().toISOString().split("T")[0]}.csv`;document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+renderPills();
+</script>
+</body>
+</html>
