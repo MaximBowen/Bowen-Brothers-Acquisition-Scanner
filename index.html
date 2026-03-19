@@ -253,14 +253,24 @@ let _jc=0;
 function txQuery(city,keywords,limit){
   return new Promise((resolve,reject)=>{
     const cb="_tx"+(_jc++);
-    const kw=keywords.map(k=>`upper(taxpayer_name) like '%${k.toUpperCase()}%'`).join(" OR ");
-    const q=`$where=(${kw}) AND upper(taxpayer_city)='${city.toUpperCase()}'&$limit=${limit}&$order=taxpayer_name&$jsonp=${cb}`;
-    window[cb]=function(d){delete window[cb];document.head.removeChild(s);resolve(Array.isArray(d)?d:[]);};
+    const kw=keywords.map(k=>`upper(taxpayer_name) like '%25${k.toUpperCase()}%25'`).join(" OR ");
+    const whereClause=encodeURIComponent(`(${kw}) AND upper(taxpayer_city)='${city.toUpperCase()}'`);
+    const url=`https://data.texas.gov/resource/9cir-efmm.json?$where=${whereClause}&$limit=${limit}&$order=taxpayer_name&$$app_token=&$jsonp=${cb}`;
+    console.log("TX SODA URL:", url);
+    window[cb]=function(d){
+      console.log("TX SODA response:", d);
+      delete window[cb];try{document.head.removeChild(s);}catch(e){}
+      resolve(Array.isArray(d)?d:[]);
+    };
     const s=document.createElement("script");
-    s.src="https://data.texas.gov/resource/9cir-efmm.json?"+q;
-    s.onerror=()=>{delete window[cb];document.head.removeChild(s);reject(new Error("TX SODA request failed"));};
+    s.src=url;
+    s.onerror=(e)=>{
+      console.error("TX SODA script error:", e);
+      delete window[cb];try{document.head.removeChild(s);}catch(e2){}
+      reject(new Error("TX SODA request failed"));
+    };
     document.head.appendChild(s);
-    setTimeout(()=>{if(window[cb]){delete window[cb];try{document.head.removeChild(s);}catch(e){}reject(new Error("TX SODA timeout"));}},20000);
+    setTimeout(()=>{if(window[cb]){console.warn("TX SODA timeout for callback",cb);delete window[cb];try{document.head.removeChild(s);}catch(e){}reject(new Error("TX SODA timeout"));}},20000);
   });
 }
 
