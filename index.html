@@ -224,13 +224,33 @@ function saveKeys(){
   TXKEY=document.getElementById("kTxTax").value.trim();
   CLKEY=document.getElementById("kClaude").value.trim();
   SKEY=document.getElementById("kSift").value.trim();
+  // Save to localStorage
+  try{
+    localStorage.setItem("bb_gkey",GKEY);
+    localStorage.setItem("bb_txkey",TXKEY);
+    localStorage.setItem("bb_clkey",CLKEY);
+    localStorage.setItem("bb_skey",SKEY);
+  }catch(e){}
   const p=[];
   p.push('<span style="color:var(--gn600);">✓ TX SODA (always on)</span>');
   if(TXKEY)p.push('<span style="color:var(--gn600);">✓ TX Tax Accounts</span>');
   if(GKEY)p.push('<span style="color:#1d4ed8;">✓ Google Places</span>');
   if(CLKEY)p.push('<span style="color:#7c3aed;">✓ Claude AI</span>');
-  document.getElementById("keyStatus").innerHTML=p.join(" · ");
+  document.getElementById("keyStatus").innerHTML=p.join(" · ") + ' <span style="color:var(--g400);">· Keys saved to browser</span>';
   updateBtn();
+}
+function loadKeys(){
+  try{
+    const g=localStorage.getItem("bb_gkey")||"";
+    const t=localStorage.getItem("bb_txkey")||"";
+    const c=localStorage.getItem("bb_clkey")||"";
+    const s=localStorage.getItem("bb_skey")||"";
+    if(g)document.getElementById("kGoogle").value=g;
+    if(t)document.getElementById("kTxTax").value=t;
+    if(c)document.getElementById("kClaude").value=c;
+    if(s)document.getElementById("kSift").value=s;
+    if(g||t||c||s)saveKeys();
+  }catch(e){}
 }
 
 // PILLS
@@ -559,6 +579,7 @@ function exportCSV(mode){
   a.download=`AcquisitionLeads_${new Date().toISOString().split("T")[0]}.csv`;document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
 renderPills();
+loadKeys();
 </script>
 </body>
 </html>
